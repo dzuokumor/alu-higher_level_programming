@@ -14,6 +14,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.engine.url import URL
 from model_state import Base, State
 
+
 if __name__ == "__main__":
     mySQL_u = sys.argv[1]
     mySQL_p = sys.argv[2]
@@ -25,7 +26,9 @@ if __name__ == "__main__":
     engine = create_engine(URL(**url), pool_pre_ping=True)
     Base.metadata.create_all(engine)
 
-    session = Session(bind=engine)
-    state_to_update = session.query(State).get(2)
-    state_to_update.name = "New Mexico"
+    session = Session(bind=engine, max_rows=10,000)
+
+    q = session.query(State).filter(State.id == 2)
+    q.update({State.name: "New Mexico"})
+
     session.commit()
