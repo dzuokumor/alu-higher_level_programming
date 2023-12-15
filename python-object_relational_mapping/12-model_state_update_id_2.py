@@ -26,7 +26,7 @@ if __name__ == "__main__":
     engine = create_engine(URL(**url), pool_pre_ping=True)
     Base.metadata.create_all(engine)
 
-    session = Session(bind=engine, max_rows=10,000)
+    session = Session(bind=engine)
 
     q = session.query(State).filter(State.id == 2)
     q.update({State.name: "New Mexico"})
